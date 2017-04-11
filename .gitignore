@@ -1,3 +1,17 @@
+# Mac Resource files
+._*
+*.DS_Store
+
+# Archives
+*.gz
+
+# Cache and build output directories
+.tscache
+dist
+
+# CI Test results
+testresults.xml
+
 # Logs
 logs
 *.log
