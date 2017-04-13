@@ -1,6 +1,6 @@
 {
   "name": "lib-lti",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Library for creating IMS LTI Consumer and Provider tools.",
   "author": "GradeCam LLC",
   "license": "MIT",
