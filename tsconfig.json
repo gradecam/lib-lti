@@ -4,7 +4,6 @@
         "declaration": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "importHelpers": true,
         "inlineSourceMap": true,
         "lib": ["DOM", "ES2016", "ES6", "ScriptHost"],
         "module": "commonjs",
