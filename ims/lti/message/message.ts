@@ -1,4 +1,4 @@
-import {field, getFieldOpts, required} from "../decorators";
+import {field, getFieldOpts, required} from "../decorators/field";
 import OAuth from "node-oauth-1.0a-ts";
 
 /**

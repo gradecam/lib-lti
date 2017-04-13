@@ -1,5 +1,5 @@
 import {Message} from "./message";
-import {field, recommended} from "../decorators";
+import {field, recommended} from "../decorators/field";
 
 export class RequestMessage  extends Message {
     @recommended() user_id?: string = void 0;

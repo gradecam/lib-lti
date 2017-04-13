@@ -1,5 +1,5 @@
 import {RequestMessage} from './request_message';
-import {deprecated, field, recommended, required} from "../decorators";
+import {deprecated, field, recommended, required} from "../decorators/field";
 
 export class BasicLTILaunchRequest extends RequestMessage {
     @required() resource_link_id: string = <any>void 0;

@@ -1,6 +1,6 @@
 import * as uuid from "uuid";
 import {RequestMessage} from "./request_message";
-import {field, recommended, required} from "../decorators";
+import {field, recommended, required} from "../decorators/field";
 
 export class ToolProxyReregistrationRequest extends RequestMessage {
     @required() tc_profile_url: string = <any>void 0;

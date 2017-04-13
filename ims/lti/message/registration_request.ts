@@ -1,6 +1,6 @@
 import * as uuid from "uuid";
 import {RequestMessage} from "./request_message";
-import {required} from "../decorators";
+import {required} from "../decorators/field";
 
 export class RegistrationRequest extends RequestMessage {
     @required() reg_key: string = <any>void 0;
