@@ -25,7 +25,7 @@ export class Message {
     @field() launch_url?: string = void 0;
 
     // OAuth parameters
-    @required() oauth_consumer_key: string = <any>void 0;
+    @field() oauth_consumer_key: string = <any>void 0;
     @field() oauth_callback?: string = void 0;
     @field() oauth_nonce?: string = void 0;
     @field() oauth_signature?: string = void 0;
