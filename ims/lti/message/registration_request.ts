@@ -12,6 +12,7 @@ export class RegistrationRequest extends RequestMessage {
 
     constructor(defaults: Partial<RegistrationRequest> = {}) {
         super();
+        this._initialize(defaults);
         this.lti_message_type = RegistrationRequest.MESSAGE_TYPE;
     }
 
