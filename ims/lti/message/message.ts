@@ -148,25 +148,28 @@ export class Message {
             }
         });
 
+        const thisAny: any = this;
         // next verify that the required fields from validationOpts are present
-        if(validationOpts.required) {
-            validationOpts.required.forEach( (key) => {
-                if(this[key] === void 0) {
+        if (validationOpts.required) {
+            validationOpts.required.forEach((key) => {
+                if (thisAny[key] === void 0) {
                     throw new Error(`${key} is a required property.`);
                 }
             });
         }
 
         // finally verify that the match fields from validationOpts meet the requirements
-        if(validationOpts.match) {
-            Object.keys(validationOpts.match).forEach( (key) => {
-                if(typeof validationOpts.match[key] == 'string') {
-                    if(this[key] !== validationOpts.match[key]) {
-                        throw Error(`LTI option ${key} must be '${validationOpts.match[key]}'`);
+        if (validationOpts.match) {
+            const match = validationOpts.match;
+            Object.keys(match).forEach( (key) => {
+                if (typeof match[key] == 'string') {
+                    if (thisAny[key] !== match[key]) {
+                        throw Error(`LTI option ${key} must be '${match[key]}'`);
                     }
-                } else if(validationOpts.match[key] instanceof RegExp) {
-                    if(!this[key].match(validationOpts.match[key])) {
-                        throw Error(`LTI option ${key} must match regular expression /${validationOpts.match[key]}/`);
+                } else if(match[key] instanceof RegExp) {
+                    const re: RegExp = <any>match[key];
+                    if (!re.test(thisAny[key])) {
+                        throw Error(`LTI option ${key} must match regular expression /${match[key]}/`);
                     }
                 } else {
                     throw Error(`invalid validation value for ${key}`);
