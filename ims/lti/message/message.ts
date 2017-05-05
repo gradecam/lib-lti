@@ -25,7 +25,7 @@ export class Message {
     @field() launch_url?: string = void 0;
 
     // OAuth parameters
-    @required() oauth_consumer_key: string = <any>void 0;
+    @field() oauth_consumer_key: string = <any>void 0;
     @field() oauth_callback?: string = void 0;
     @field() oauth_nonce?: string = void 0;
     @field() oauth_signature?: string = void 0;
@@ -135,6 +135,48 @@ export class Message {
         return this.oauth_signature == signature;
     }
 
+    isValid<T>(this: T, validationOpts: ValidationOpts) {
+        // first check to verify that all fields required by the LTI spec are present
+        const keys = Object.keys(this);
+        let obj: any = {};
+        keys.forEach((key: keyof T) => {
+            // The launch url should not be part of a POST body
+            if (key === "launch_url") { return; }
+            const opt = getFieldOpts(this, key);
+            if (opt && opt.required && this[key] === void 0) {
+                throw new Error(`${key} is a required property.`);
+            }
+        });
+
+        // next verify that the required fields from validationOpts are present
+        if(validationOpts.required) {
+            validationOpts.required.forEach( (key) => {
+                if(this[key] === void 0) {
+                    throw new Error(`${key} is a required property.`);
+                }
+            });
+        }
+
+        // finally verify that the match fields from validationOpts meet the requirements
+        if(validationOpts.match) {
+            Object.keys(validationOpts.match).forEach( (key) => {
+                if(typeof validationOpts.match[key] == 'string') {
+                    if(this[key] !== validationOpts.match[key]) {
+                        throw Error(`LTI option ${key} must be '${validationOpts.match[key]}'`);
+                    }
+                } else if(validationOpts.match[key] instanceof RegExp) {
+                    if(!this[key].match(validationOpts.match[key])) {
+                        throw Error(`LTI option ${key} must match regular expression /${validationOpts.match[key]}/`);
+                    }
+                } else {
+                    throw Error(`invalid validation value for ${key}`);
+                }
+            });
+        }
+
+        return true;
+    }
+
     toJSON<T>(this: T): any {
         const keys = Object.keys(this);
         let obj: any = {};
@@ -153,4 +195,9 @@ export class Message {
         });
         return obj;
     }
+}
+
+export interface ValidationOpts {
+    required?: string[];
+    match?: {[key: string]: string | RegExp};
 }
