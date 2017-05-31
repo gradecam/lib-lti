@@ -39,6 +39,7 @@ export class Message {
     private _custom: any;
     private _ext: any;
     private _unknown: any;
+    [key: string]: any;
 
     constructor() {
         this._custom = {};
@@ -61,21 +62,29 @@ export class Message {
         });
     }
 
-    get<T extends Message>(this: T, key: string) {
+    /**
+     * Helper method to get a value from the appropriate value map.
+     * @type {T}
+     */
+    get<T extends Message>(this: T, key: string, defaultValue: any = void 0) {
         const keys = Object.keys(this);
         if (keys.indexOf(key) > -1) {
-            return (<any>this)[key];
+            return valueOrDefault(this[key], defaultValue);
         }
         if (key.startsWith(Message.EXTENSION_PREFIX)) {
-            return this._ext[key];
+            return valueOrDefault(this._ext[key], defaultValue);
         }
         if (key.startsWith(Message.CUSTOM_PREFIX)) {
-            return this._custom[key];
+            return valueOrDefault(this._custom[key], defaultValue);
         } else {
-            return this._unknown[key];
+            return valueOrDefault(this._unknown[key], defaultValue);
         }
     }
 
+    /**
+     * Helper method used to set values in the appropriate value map.
+     * @type {T}
+     */
     set<T extends Message>(this: T, key: string, value: any): T {
         const keys = Object.keys(this);
         if (keys.indexOf(key) > -1) {
@@ -83,7 +92,7 @@ export class Message {
             if (opts && opts.required && value === void 0) {
                 throw new Error(`${key} is a required property.`);
             }
-            (<any>this)[key] = value;
+            this[key] = value;
         } else if (key.startsWith(Message.EXTENSION_PREFIX)) {
             this._ext[key] = value;
         } else if (key.startsWith(Message.CUSTOM_PREFIX)) {
@@ -135,7 +144,7 @@ export class Message {
         return this.oauth_signature == signature;
     }
 
-    isValid<T>(this: T, validationOpts: ValidationOpts) {
+    isValid<T extends Message>(this: T, validationOpts: ValidationOpts) {
         // first check to verify that all fields required by the LTI spec are present
         const keys = Object.keys(this);
         let obj: any = {};
@@ -148,11 +157,10 @@ export class Message {
             }
         });
 
-        const thisAny: any = this;
         // next verify that the required fields from validationOpts are present
         if (validationOpts.required) {
             validationOpts.required.forEach((key) => {
-                if (thisAny[key] === void 0) {
+                if (this[key] === void 0) {
                     throw new Error(`${key} is a required property.`);
                 }
             });
@@ -163,12 +171,12 @@ export class Message {
             const match = validationOpts.match;
             Object.keys(match).forEach( (key) => {
                 if (typeof match[key] == 'string') {
-                    if (thisAny[key] !== match[key]) {
+                    if (this[key] !== match[key]) {
                         throw Error(`LTI option ${key} must be '${match[key]}'`);
                     }
-                } else if(match[key] instanceof RegExp) {
+                } else if (match[key] instanceof RegExp) {
                     const re: RegExp = <any>match[key];
-                    if (!re.test(thisAny[key])) {
+                    if (!re.test(this[key])) {
                         throw Error(`LTI option ${key} must match regular expression /${match[key]}/`);
                     }
                 } else {
@@ -180,7 +188,7 @@ export class Message {
         return true;
     }
 
-    toJSON<T>(this: T): any {
+    toJSON<T extends Message>(this: T): any {
         const keys = Object.keys(this);
         let obj: any = {};
         keys.forEach((key: keyof T) => {
@@ -198,6 +206,18 @@ export class Message {
         });
         return obj;
     }
+}
+
+/**
+ * Utility function to return a `value` or `defaultValue` if value is undefined.
+ * @param {any} value        [description]
+ * @param {any} defaultValue [description]
+ */
+function valueOrDefault(value: any, defaultValue: any) {
+    if (typeof value == "undefined") {
+        return defaultValue;
+    }
+    return value;
 }
 
 export interface ValidationOpts {
