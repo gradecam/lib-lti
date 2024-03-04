@@ -38,3 +38,5 @@ export class BasicLTILaunchRequest extends RequestMessage {
         this.lti_message_type = BasicLTILaunchRequest.MESSAGE_TYPE;
     }
 }
+
+// 
