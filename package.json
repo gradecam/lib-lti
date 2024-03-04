@@ -1,6 +1,6 @@
 {
   "name": "lib-lti",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "Library for creating IMS LTI Consumer and Provider tools.",
   "author": "GradeCam LLC",
   "license": "MIT",
@@ -20,24 +20,24 @@
     "typescript"
   ],
   "dependencies": {
-    "base64url-ts2": "^2.0.1",
-    "node-oauth-1.0a-ts": "^4.0.3",
-    "uuid": "^3.0.1"
+    "base64url-ts2": "=2.0.1",
+    "node-oauth-1.0a-ts": "=4.0.3",
+    "uuid": "=3.0.1"
   },
   "devDependencies": {
-    "@types/chai": "^3.4.35",
-    "@types/mocha": "^2.2.40",
-    "@types/node": "^6.0.68",
-    "@types/uuid": "^2.0.29",
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0",
-    "reflect-metadata": "^0.1.10",
-    "ts-node": "^3.0.2",
-    "tslint": "^4.5.1",
-    "typescript": "^2.3.2"
+    "@types/chai": "=3.4.35",
+    "@types/mocha": "=2.2.40",
+    "@types/node": "=6.0.68",
+    "@types/uuid": "=2.0.29",
+    "chai": "=3.5.0",
+    "mocha": "=3.2.0",
+    "reflect-metadata": "=0.1.10",
+    "ts-node": "=3.0.2",
+    "tslint": "=4.5.1",
+    "typescript": "=2.3.2"
   },
   "peerDependencies": {
-    "reflect-metadata": "^0.1.10"
+    "reflect-metadata": "=0.1.10"
   },
   "engines": {
     "node": ">= 6"
